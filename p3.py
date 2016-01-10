@@ -2,6 +2,8 @@
 
 import mw
 import pad
+import addr
+import controller
 import sys
 
 if __name__ == '__main__':
@@ -12,6 +14,20 @@ if __name__ == '__main__':
     pad = pad.Pad(home + '/Pipes/p3')
     mw = mw.MemoryWatcher(home + '/MemoryWatcher/MemoryWatcher')
 
-    # Just print out addresses and values for now
+    currentFrame = 0;
+    controller1 = controller.Controller();
+
     for address, value in mw:
-        print(address, value)
+
+        # update global frame count
+        if address == addr.toStr(addr.globalFrameCounter):
+            currentFrame = int.from_bytes(value, byteorder='big')
+
+        # track controller 1 digital inputs
+        elif address == addr.toStr(addr.controller1DigitalData):
+            for button, press in controller1.updateDigitalData(value):
+                print('frame ', currentFrame, ': ', button, ' pressed' if press else ' released')
+
+        # print unhandled events
+        elif address in addr.names:
+            print('frame ', currentFrame, ': ', addr.names[address], value)
