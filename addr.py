@@ -70,11 +70,6 @@ names[controller4ShoulderData] = "controller4ShoulderData"
 names[controller4AnalogDataA] = "controller4AnalogDataA"
 names[controller4AnalogDataB] = "controller4AnalogDataB"
 
-0x804530E0
-
-
 locationsTxt = ""
 for address in names:
     locationsTxt += address + "\n"
-
-print(locationsTxt)
