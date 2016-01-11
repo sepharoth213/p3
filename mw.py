@@ -35,4 +35,3 @@ class MemoryWatcher:
         assert len(data) == 2
         # Strip the null terminator, pad with zeros, then convert to bytes
         return data[0].upper(), binascii.unhexlify(data[1].strip('\x00').zfill(8))
-        # return data[0].upper(), binascii.unhexlify(data[1].strip('\x00').zfill(8))
