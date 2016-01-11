@@ -20,11 +20,11 @@ if __name__ == '__main__':
     for address, value in mw:
 
         # update global frame count
-        if address == addr.toStr(addr.globalFrameCounter):
+        if address == addr.globalFrameCounter:
             currentFrame = int.from_bytes(value, byteorder='big')
 
         # track controller 1 digital inputs
-        elif address == addr.toStr(addr.controller1DigitalData):
+        elif address == addr.controller1DigitalData:
             for button, press in controller1.updateDigitalData(value):
                 print('frame ', currentFrame, ': ', button, ' pressed' if press else ' released')
 
