@@ -31,6 +31,11 @@ class Pad:
     def __init__(self, path):
         """Opens the fifo. Blocks until the other end is listening."""
         try:
+            # if necessary, create the parent directory
+            os.mkdir(path[:path.rfind('/')])
+        except OSError:
+            pass
+        try:
             os.mkfifo(path)
         except OSError:
             pass
