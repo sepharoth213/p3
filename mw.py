@@ -7,6 +7,11 @@ class MemoryWatcher:
     def __init__(self, path):
         """Creates the socket if it does not exist, and then opens it."""
         try:
+            # if necessary, create the parent directory
+            os.mkdir(path[:path.rfind('/')])
+        except OSError:
+            pass
+        try:
             os.unlink(path)
         except OSError:
             pass
