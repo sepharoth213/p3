@@ -12,6 +12,9 @@ if __name__ == '__main__':
         sys.exit('Usage: ' + sys.argv[0] + ' dolphin-home')
     home = sys.argv[1]
 
+    if not os.path.exists(home):
+        sys.exit('The path \'' + home + '\' does not exist')
+
     pad = pad.Pad(home + '/Pipes/p3')
     mw = mw.MemoryWatcher(home + '/MemoryWatcher/MemoryWatcher')
 
