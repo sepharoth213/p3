@@ -5,6 +5,7 @@ import pad
 import addr
 import controller
 import sys
+import os
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
@@ -13,6 +14,11 @@ if __name__ == '__main__':
 
     pad = pad.Pad(home + '/Pipes/p3')
     mw = mw.MemoryWatcher(home + '/MemoryWatcher/MemoryWatcher')
+
+    # if necessary, create Locations.txt based on addr.locationsTxt
+    if not os.path.exists(home + '/MemoryWatcher/Locations.txt'):
+        with open(home + '/MemoryWatcher/Locations.txt', 'w') as file:
+            file.write(addr.locationsTxt)
 
     currentFrame = 0;
     controller1 = controller.Controller();
