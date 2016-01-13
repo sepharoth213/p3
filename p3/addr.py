@@ -20,4 +20,4 @@ addresses = [
 locationsTxt = ""
 for address in addresses:
     locationsTxt += address.name + "\n"
-    names[address.name] = address
+    names[address.address] = address
