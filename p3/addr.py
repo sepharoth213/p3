@@ -1,7 +1,7 @@
 import enum
 import itertools
 
-from . import at
+from p3 import at
 
 '''
 
