@@ -1,4 +1,4 @@
-from . import mw, pad, addr, at
+from . import mw, pad, at, addr
 from collections import OrderedDict
 
 class Event:
@@ -22,10 +22,10 @@ class Melee:
 
         watcher = mw.MemoryWatcher(home + '/MemoryWatcher/MemoryWatcher')
         for address, value in watcher:
-            name = addr.names[address].name
-            parsedValue = addr.names[address].get_value(value)
+            name = addr.Address.ByAddress(address).name
+            parsedValue = addr.Address.ByAddress(address).get_value(value)
             self.gameState[name] = parsedValue
-            callback(addr.names[address],parsedValue)
+            callback(addr.Address.ByAddress(address),parsedValue)
             self.dispatch(name, Event(parsedValue))
 
     def dispatch(self, eventName, event=None):
