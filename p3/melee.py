@@ -22,13 +22,13 @@ class Melee:
 
         watcher = mw.MemoryWatcher(home + '/MemoryWatcher/MemoryWatcher')
         for address, value in watcher:
-            name = addr.AddressObjects.GetByAddress(address).name
+            ao = addr.AddressObjects.GetByAddress(address)
             
-            parsedValue = addr.AddressObjects.GetByAddress(address).parse_bytes(value)
-            self.gameState[name] = parsedValue
+            parsedValue = ao.parse_bytes(value)
+            self.gameState[ao.name] = parsedValue
             
-            callback(addr.AddressObjects.GetByAddress(address),parsedValue)
-            self.dispatch(name, Event(parsedValue))
+            callback(ao,parsedValue)
+            self.dispatch(ao.name, Event(parsedValue))
 
     def dispatch(self, eventName, event=None):
         if event is None:
