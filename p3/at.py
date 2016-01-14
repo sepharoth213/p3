@@ -7,7 +7,7 @@ class IntegerAddress:
         self.mask = mask
         self.shift = shift
 
-    def get_value(self,value):
+    def parse_bytes(self,value):
         return (int.from_bytes(value,byteorder='big') >> self.shift) & self.mask 
 
 class FloatAddress:
@@ -15,7 +15,7 @@ class FloatAddress:
         self.name = name
         self.address = address
 
-    def get_value(self,value):
+    def parse_bytes(self,value):
         return struct.unpack('f', value)[0]
 
 class BooleanAddress:
@@ -26,5 +26,5 @@ class BooleanAddress:
         self.shift = shift
         self.compareValue = compareValue
 
-    def get_value(self,value):
+    def parse_bytes(self,value):
         return ((int.from_bytes(value,byteorder='big') >> self.shift) & self.mask == int(self.compareValue, 16))
