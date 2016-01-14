@@ -5,7 +5,7 @@ from p3 import at
 
 '''
 
-Defines some addresses, and generates a byAddress dictionary
+Defines some addresses, and generates an addressMap dictionary
 
 '''
 
@@ -30,7 +30,11 @@ def MultipleAddress(addressType,args,addressOffset,totalAddresses = 4,nameOffset
     return addressObjects
 
 class Address:
-    byAddress = {}
+
+    def ByAddress(address):
+        return Address.addressMap[address]
+
+    addressMap = {}
 
     addresses = [
         
@@ -59,4 +63,4 @@ class Address:
     locationsTxt = ""
     for address in addresses:
         locationsTxt += address.address + "\n"
-        byAddress[address.address] = address
+        addressMap[address.address] = address
