@@ -3,7 +3,7 @@ import socket
 import unittest
 import struct
 
-from p3.addr import MultipleAddress
+from p3.addr import AddressObjects
 from p3.at import IntegerAddress
 
 class AddressesTest(unittest.TestCase):
@@ -34,9 +34,9 @@ class AddressesTest(unittest.TestCase):
                 IntegerAddress("5test", "DEADBEE0 22", 20, 0xF),
                 IntegerAddress("6test", "DEADBEE0 33", 20, 0xF)
             ]
-        m1 = MultipleAddress(IntegerAddress,("t#est","DEADBEE0"),"1",3)
-        m2 = MultipleAddress(IntegerAddress,("test#","DEADBE00", 16),"12")
-        m3 = MultipleAddress(IntegerAddress,("#test","DEADBEE0 0", 20, 0xF),"0 11",4,3)
+        m1 = AddressObjects._multiple_address(IntegerAddress,("t#est","DEADBEE0"),"1",3)
+        m2 = AddressObjects._multiple_address(IntegerAddress,("test#","DEADBE00", 16),"12")
+        m3 = AddressObjects._multiple_address(IntegerAddress,("#test","DEADBEE0 0", 20, 0xF),"0 11",4,3)
 
         for i in range(len(test1)):
             self.addressEqual(test1[i],m1[i])

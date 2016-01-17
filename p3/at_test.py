@@ -27,9 +27,9 @@ class AddressTypeTest(unittest.TestCase):
     def test_float(self):
         test = FloatAddress("test", "DEADBEEF")
 
-        self.assertEqual(test.parse_bytes(struct.pack('f', 2)),2)
-        self.assertEqual(test.parse_bytes(struct.pack('f', 1923102)),1923102)
-        self.assertEqual(round(test.parse_bytes(struct.pack('f', 121.1231)),4),121.1231)
+        self.assertEqual(test.parse_bytes(struct.pack('>f', 2)),2)
+        self.assertEqual(test.parse_bytes(struct.pack('>f', 1923102)),1923102)
+        self.assertEqual(round(test.parse_bytes(struct.pack('>f', 121.1231)),4),121.1231)
         
     def test_bool(self):
         test1 = BooleanAddress("test", "DEADBEEF", "10")
