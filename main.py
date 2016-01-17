@@ -1,16 +1,45 @@
 
-import sys
+import sys, os, json
 from p3.melee import Melee
+from p3.addr import AddressObjects
 
-def listener (event, gameState):
-    print(event.name, " ", gameState)
+inGame = False;
+toSave = [];
+saveNum = 0;
+
+def listener (ao, value):
+    global inGame
+    if inGame:
+        toSave.append([ao.name,value])
+        if ao.name == "player1AnimationSpeed":
+            print(value)
+        # print(ao.name, " ", value)
+
+def menuCallback(event, gameState):
+    global inGame, toSave, saveNum
+    # print("menu " + str(event.value))
+    if event.value == 13 and inGame == False:
+        inGame = True;
+        toSave = []
+        print('starting record')
+    elif event.value != 13 and inGame == True:
+        inGame = False
+        pathName = sys.argv[2] + str(saveNum) + ".json"
+        while(os.path.exists(pathName)):
+            saveNum += 1
+            pathName = sys.argv[2] + str(saveNum) + ".json"
+        # pickle.dump( toSave, open( pathName, "wb" ) )
+        # with open(pathName, 'w') as outfile:
+        #     json.dump(toSave, outfile)
+        saveNum += 1
+        print('ended record ' + pathName)
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        sys.exit('Usage: ' + sys.argv[0] + ' dolphin-home')
+    if len(sys.argv) != 3:
+        sys.exit('Usage: ' + sys.argv[0] + ' dolphin-home savepath')
     home = sys.argv[1]
 
     melee = Melee()
 
-    # melee.add_listener("globalFrameCounter",listener)
+    melee.add_listener("currentMenu",menuCallback)
     melee.listen(home,listener)

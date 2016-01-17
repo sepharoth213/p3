@@ -22,7 +22,7 @@ class Melee:
 
         watcher = mw.MemoryWatcher(home + '/MemoryWatcher/MemoryWatcher')
         for address, value in watcher:
-            ao = addr.AddressObjects.GetByAddress(address)
+            ao = addr.AddressObjects.get_by_address(address)
             
             parsedValue = ao.parse_bytes(value)
             self.gameState[ao.name] = parsedValue
