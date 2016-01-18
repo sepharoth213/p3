@@ -9,15 +9,25 @@ class AddressesTest(unittest.TestCase):
     def setUp(self):
         AddressObjects.init()
 
+    def test_by_name(self):
+        ao = AddressObjects.get_by_name("globalFrameCounter")
+        self.assertEqual(ao.parse_bytes(struct.pack('>i',123456)), 123456)
+
+    def test_by_address(self):
+        ao = AddressObjects.get_by_address("80479D60")
+        self.assertEqual(ao.parse_bytes(struct.pack('>i',123456)), 123456)
+
     def test_accessor(self):
-        kek = AddressObjects._name_map["player1X"];
-        print(kek)
-        kek = AddressObjects._name_map["player"][0].X();
-        print(repr(kek));
-        self.assertEqual(kek.name,"player1X")
-        # self.assertEqual(AddressObjects["player"][0]address,b.address)
-        # self.assertEqual(AddressObjects["player"][0]shift,b.shift)
-        # self.assertEqual(AddressObjects["player"][0]mask,b.mask)
+        testMap = {
+            "player1X": 3.2,
+            "player2DeltaY": 6.4,
+            "player3Stocks": 2,
+        }
+        AddressObjects.add_multiples_accessors(testMap)
+
+        self.assertEqual(testMap["player"][0].X(),3.2)
+        self.assertEqual(testMap["player"][1].DeltaY(),6.4)
+        self.assertEqual(testMap["player"][2].Stocks(),2)
 
 if __name__ == '__main__':
     unittest.main()
