@@ -43,6 +43,45 @@ class AddressObjects:
         cls._multiple_address("player", "ShieldSize",     at.FloatAddress, ("80453130 19F8"), "E90")
         cls._multiple_address("player", "HitstunFrames",  at.FloatAddress, ("80453130 23A0"), "E90")
 
+        locations_txt = ""
+        for address in cls.address_objects:
+            locations_txt += address.address + "\n"
+            cls._address_map[address.address] = address
+            cls._name_map[address.name] = address
+
+        cls.add_multiples_accessors(cls._name_map)
+
+    @classmethod
+    def get_by_address(cls,address):
+        return cls._address_map[address]
+
+    @classmethod
+    def get_by_name(cls,name):
+        return cls._name_map[name]
+
+    @classmethod
+    def add_multiples_accessors(cls,addressDict):
+        for key, multiple in cls._multiples.items():
+            addressDict[multiple.name] = []
+            instance = {}
+            for i in range(multiple.numMultiples):
+                multipleObj = _Empty()
+                for member in multiple.members:
+                    setattr(multipleObj, member,
+                        (lambda a: \
+                            (lambda b: \
+                                (lambda c:\
+                                    lambda: addressDict[a.name + str(a.identifiers[b]) + c]\
+                                )(member)
+                            )(i)
+                        )(multiple)
+                    )
+                addressDict[multiple.name].append(multipleObj)
+
+    _address_map = {}
+    _name_map = {}
+    _multiples = {}
+
     @classmethod
     def _add_multiple(cls,name,numMultiples,nameOffset):
         cls._multiples[name] = _Multiple(name,numMultiples,nameOffset)
@@ -54,11 +93,12 @@ class AddressObjects:
         baseAddress = [i for i in map(lambda o: int(o, 16), args[0].split())]
         offsets = [i for i in map(lambda o: int(o, 16), addressOffset.split())]
         multiple = cls._multiples[multipleName]
+        multiple.members.append(field)
 
         assert(len(baseAddress) >= len(offsets))
 
         for i in range(multiple.numMultiples):
-            name = multipleName + multiple.identifiers[i] + field
+            name = multipleName + str(multiple.identifiers[i]) + field
             address = ""
             for b, o in itertools.zip_longest(baseAddress,offsets):
                 if o is not None:
@@ -72,28 +112,6 @@ class AddressObjects:
             newArgs = tuple([name,address] + list(args[1:]))
             cls.address_objects.append(addressType(*newArgs))
 
-            locations_txt = ""
-            for address in cls.address_objects:
-                locations_txt += address.address + "\n"
-                cls._address_map[address.address] = address
-
-    @classmethod
-    def get_by_address(cls,address):
-        return cls._address_map[address]
-
-    @classmethod
-    def add_multiples_accessors(cls,addressDict):
-        for key, multiple in cls._multiples:
-            addressDict[multiple.name] = {}
-            instance = {}
-            for i in multiple.identifiers:
-                addressDict[multiple.name][i] = _Empty()
-                for member in multiple.members:
-                    setattr(addressDict[multiple.name][i], member, lambda: addressDict[multiple.name + str(i) + member])
-
-    _address_map = {}
-    _multiples = {}
-
 
 class _Empty:
     pass
@@ -102,5 +120,5 @@ class _Multiple:
     def __init__(self, name, numMultiples, idOffset):
         self.name = name
         self.numMultiples = numMultiples
-        self.identifiers = [str(i + idOffset) for i in range(numMultiples)]
+        self.identifiers = [i + idOffset for i in range(numMultiples)]
         self.members = []
