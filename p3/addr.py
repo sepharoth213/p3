@@ -39,9 +39,10 @@ class AddressObjects:
         cls._multiple_address("player", "ShieldSize",     at.FloatAddress, "80453130 19F8", "E90")
         cls._multiple_address("player", "HitstunFrames",  at.FloatAddress, "80453130 23A0", "E90")
 
-        locations_txt = ""
+        #locations_txt holds the correct value for Locations.txt in Dolphin
+        cls.locations_txt = ""
         for address in cls.address_objects:
-            locations_txt += address.address + "\n"
+            cls.locations_txt += address.address + "\n"
             cls._address_map[address.address] = address
             cls._name_map[address.name] = address
 
