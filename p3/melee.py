@@ -24,11 +24,12 @@ class Melee:
         for address, value in watcher:
             ao = addr.AddressObjects.get_by_address(address)
             
-            parsedValue = ao.parse_bytes(value)
-            self.gameState[ao.name] = parsedValue
-            
-            callback(ao,parsedValue)
-            self.dispatch(ao.name, Event(parsedValue))
+            for name, parsedValue in ao.parse_bytes(value):
+                if name not in self.gameState or self.gameState[name] != parsedValue:
+                    self.gameState[name] = parsedValue
+                    
+                    callback(name, parsedValue)
+                    self.dispatch(name, Event(parsedValue))
 
     def dispatch(self, eventName, event=None):
         if event is None:

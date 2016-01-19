@@ -7,12 +7,12 @@ inGame = False;
 toSave = [];
 saveNum = 0;
 
-def listener (ao, value):
+def listener (name, value):
     global inGame
-    if inGame:
-        toSave.append([ao.name,value])
-        if ao.name == "player1AnimationSpeed":
-            print(value)
+    toSave.append([name,value])
+    if name[:4] == "cont":
+        print(name,value)
+    # if inGame:
         # print(ao.name, " ", value)
 
 def menuCallback(event, gameState):
@@ -35,6 +35,8 @@ def menuCallback(event, gameState):
         print('ended record ' + pathName)
 
 if __name__ == '__main__':
+    AddressObjects.init()
+    print(AddressObjects.locations_txt)
     if len(sys.argv) != 3:
         sys.exit('Usage: ' + sys.argv[0] + ' dolphin-home savepath')
     home = sys.argv[1]
