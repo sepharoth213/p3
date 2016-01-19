@@ -37,8 +37,6 @@ class BooleanAddress:
         self.mask = mask
         self.shift = shift
         self.compare_value = compare_value
-
-        print(shift)
-
+        
     def parse_bytes(self,value):
         return ((int.from_bytes(value,byteorder='big') >> self.shift) & self.mask == int(self.compare_value, 16))
