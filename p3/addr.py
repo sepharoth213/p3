@@ -12,11 +12,10 @@ class AddressObjects:
         cls.address_objects = [
             
             at.IntegerAddress("stageID", "804D6CAD", 16),
-            at.IntegerAddress("frameCount", "8046B6CC", 16),
             at.IntegerAddress("currentMenu", "8065CC14", 20, 0xF),
 
-            at.IntegerAddress("globalPowerOnCounter", "804D7420"),
             at.IntegerAddress("globalFrameCounter", "80479D60"),
+            at.IntegerAddress("stageSelect", "804D6CAD"),
         ]
 
         cls._add_multiple("player", 4, 1)
@@ -28,21 +27,35 @@ class AddressObjects:
         cls._multiple_address("player", "ActionState", at.IntegerAddress, "80453130 70",   "E90")
         cls._multiple_address("player", "JumpsUsed",   at.IntegerAddress, "80453130 19C8", "E90", (24))
 
+        cls._multiple_address("controller", "Start",    at.BooleanAddress, "804C1FAC", "44", ("1", 12))
+        cls._multiple_address("controller", "Y",        at.BooleanAddress, "804C1FAC", "44", ("1", 11))
+        cls._multiple_address("controller", "X",        at.BooleanAddress, "804C1FAC", "44", ("1", 10))
+        cls._multiple_address("controller", "B",        at.BooleanAddress, "804C1FAC", "44", ("1", 9))
+        cls._multiple_address("controller", "A",        at.BooleanAddress, "804C1FAC", "44", ("1", 8))
+        cls._multiple_address("controller", "DigitalR", at.BooleanAddress, "804C1FAC", "44", ("1", 6))
+        cls._multiple_address("controller", "DigitalL", at.BooleanAddress, "804C1FAC", "44", ("1", 5))
+        cls._multiple_address("controller", "Z",        at.BooleanAddress, "804C1FAC", "44", ("1", 4))
+        cls._multiple_address("controller", "DpadU",    at.BooleanAddress, "804C1FAC", "44", ("1", 3))
+        cls._multiple_address("controller", "DpadD",    at.BooleanAddress, "804C1FAC", "44", ("1", 2))
+        cls._multiple_address("controller", "DpadR",    at.BooleanAddress, "804C1FAC", "44", ("1", 1))
+        cls._multiple_address("controller", "DpadL",    at.BooleanAddress, "804C1FAC", "44", ("1", 0))
         cls._multiple_address("player", "InAir", at.BooleanAddress, "80453130 140", "E90", ("1"))
 
         cls._multiple_address("player", "X",              at.FloatAddress, "80453090",      "E90")
         cls._multiple_address("player", "Y",              at.FloatAddress, "80453094",      "E90")
         cls._multiple_address("player", "AnimationSpeed", at.FloatAddress, "80453130 8FC",  "E90")
         cls._multiple_address("player", "Facing",         at.FloatAddress, "80453130 8C",   "E90")
-        cls._multiple_address("player", "DeltaY",         at.FloatAddress, "80453130 12C",  "E90")
+        
         cls._multiple_address("player", "HitlagFrames",   at.FloatAddress, "80453130 19BC", "E90")
         cls._multiple_address("player", "ShieldSize",     at.FloatAddress, "80453130 19F8", "E90")
         cls._multiple_address("player", "HitstunFrames",  at.FloatAddress, "80453130 23A0", "E90")
 
-        locations_txt = ""
+        cls.locations_txt = ""
         for address in cls.address_objects:
-            locations_txt += address.address + "\n"
-            cls._address_map[address.address] = address
+            if address.address not in cls._address_map:
+                cls._address_map[address.address] = at.AddressObject(address.address)
+                cls.locations_txt += address.address + "\n"
+            cls._address_map[address.address].add(address)
             cls._name_map[address.name] = address
 
         cls.add_multiples_accessors(cls._name_map)
