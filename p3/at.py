@@ -16,15 +16,15 @@ class FloatAddress:
         self.address = address
 
     def parse_bytes(self,value):
-        return struct.unpack('f', value)[0]
+        return struct.unpack('>f', value)[0]
 
 class BooleanAddress:
-    def __init__(self,name,address,compareValue,shift = 0, mask = 0xFFFFFFFF):
+    def __init__(self,name,address,compare_value,shift = 0, mask = 0xFFFFFFFF):
         self.name = name
         self.address = address
         self.mask = mask
         self.shift = shift
-        self.compareValue = compareValue
+        self.compare_value = compare_value
 
     def parse_bytes(self,value):
-        return ((int.from_bytes(value,byteorder='big') >> self.shift) & self.mask == int(self.compareValue, 16))
+        return ((int.from_bytes(value,byteorder='big') >> self.shift) & self.mask == int(self.compare_value, 16))
