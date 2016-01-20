@@ -1,6 +1,7 @@
 import struct
 
 class AddressObject:
+    """Class used in _address_map and returned by get_by_address."""
     def __init__(self,address):
         self.address = address
         self.objects = []
@@ -9,6 +10,10 @@ class AddressObject:
         self.objects.append(obj)
 
     def parse_bytes(self,value):
+        """Returns a generator that generates all parsed
+        addresses stored in this AddressObject.
+
+        Use this to parse MemoryWatcher output."""
         for obj in self.objects:
             yield (obj.name, obj.parse_bytes(value))
 

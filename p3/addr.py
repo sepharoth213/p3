@@ -81,13 +81,13 @@ class AddressObjects:
 
     @classmethod
     def get_by_address(cls,address):
-        """Returns an address object with the given address.
+        """Returns an AddressObject with the given address.
         Use this to parse MemoryWatcher output."""
         return cls._address_map[address]
 
     @classmethod
     def get_by_name(cls,name):
-        """Returns an address object with the given name."""
+        """Returns an address type object with the given name."""
         return cls._name_map[name]
 
     @classmethod
