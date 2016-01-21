@@ -1,4 +1,3 @@
-import enum
 import itertools
 
 from p3 import at
