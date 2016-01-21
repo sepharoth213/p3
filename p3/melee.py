@@ -18,9 +18,9 @@ class Melee:
         self._listeners = {}
         self.gameState = {}
 
-    def listen(self,home,callback):
+    def listen(self,watcher,callback):
 
-        watcher = mw.MemoryWatcher(home + '/MemoryWatcher/MemoryWatcher')
+        # watcher = mw.MemoryWatcher(home + '/MemoryWatcher/MemoryWatcher')
         for address, value in watcher:
             ao = addr.AddressObjects.get_by_address(address)
             
