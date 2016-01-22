@@ -24,7 +24,7 @@ class Melee:
         for address, value in watcher:
             ao = addr.AddressObjects.get_by_address(address)
             
-            for name, parsedValue in ao.parse_bytes(value):
+            for name, parsedValue in ao.parse_string(value):
                 if name not in self.gameState or self.gameState[name] != parsedValue:
                     self.gameState[name] = parsedValue
                     

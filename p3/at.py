@@ -1,5 +1,8 @@
 import struct
 
+def string_to_bytes(inputString):
+    return binascii.unhexlify(inputString.strip('\x00').zfill(8))
+
 class AddressObject:
     """Class used in _address_map and returned by get_by_address."""
     def __init__(self,address):
@@ -9,11 +12,17 @@ class AddressObject:
     def add(self, obj):
         self.objects.append(obj)
 
-    def parse_bytes(self,value):
+    def parse_string(self,value):
         """Returns a generator that generates all parsed
         addresses stored in this AddressObject.
 
         Use this to parse MemoryWatcher output."""
+        for obj in self.objects:
+            yield (obj.name, obj.parse_bytes(string_to_bytes(value)))
+
+    def parse_bytes(self,value):
+        """Returns a generator that generates all parsed
+        addresses stored in this AddressObject."""
         for obj in self.objects:
             yield (obj.name, obj.parse_bytes(value))
 
