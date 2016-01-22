@@ -1,4 +1,5 @@
 import struct
+import binascii
 
 def string_to_bytes(inputString):
     return binascii.unhexlify(inputString.strip('\x00').zfill(8))
