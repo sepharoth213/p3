@@ -8,6 +8,7 @@ class MemoryWatcherTest(unittest.TestCase):
     def setUp(self):
         self.sock_path = os.getcwd() + '/sock'
         self.mw = MemoryWatcher(self.sock_path)
+        self.mw.sock.settimeout(1)
         self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
 
     def test_memory_watcher_recv(self):
@@ -26,6 +27,7 @@ class MemoryWatcherTest(unittest.TestCase):
             ]
 
         for actual, expected in zip(self.mw, expecteds):
+            # print(actual)
             self.assertEqual(actual, expected)
 
     def test_memory_watcher_timeout(self):
