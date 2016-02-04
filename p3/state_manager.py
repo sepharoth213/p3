@@ -23,7 +23,10 @@ def int_handler(obj, name, shift=0, mask=0xFFFFFFFF, wrapper=None, default=0):
         transformed = (struct.unpack('>i', value)[0] >> shift) & mask
         wrapped = transformed if wrapper is None else wrapper(transformed)
         setattr(obj, name, wrapped)
+        for cb in getattr(obj, name + "_changed"):
+            cb(obj)
     setattr(obj, name, default)
+    setattr(obj, name + "_changed", [])
     return handle
 
 def float_handler(obj, name, wrapper=None, default=0.0):
@@ -34,7 +37,10 @@ def float_handler(obj, name, wrapper=None, default=0.0):
     def handle(value):
         as_float = struct.unpack('>f', value)[0]
         setattr(obj, name, as_float if wrapper is None else wrapper(as_float))
+        for cb in getattr(obj, name + "_changed"):
+            cb(obj)
     setattr(obj, name, default)
+    setattr(obj, name + "_changed", [])
     return handle
 
 def add_address(x, y):
