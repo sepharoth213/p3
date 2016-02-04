@@ -16,7 +16,6 @@ class MemoryWatcher:
         except OSError:
             pass
         self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
-        self.sock.settimeout(0.001)
         self.sock.bind(path)
 
     def __iter__(self):
