@@ -38,12 +38,48 @@ class StateManager:
             self.addresses[type_address] = [type_handler, character_handler]
 
             state_address = data_pointer + ' 70'
-            state_handler = self.int_handler(player, 'action_state', 0, 0xFFFF, ActionState, ActionState.Unselected)
+            state_handler = self.int_handler(player, 'action_state', 0, 0xFFFF)#, ActionState, ActionState.Unselected)
             self.addresses[state_address] = state_handler
+            
+            x_address = data_pointer + ' 110'
+            x_handler = self.float_handler(player, 'x')
+            self.addresses[x_address] = x_handler
+
+            y_address = data_pointer + ' 114'
+            y_handler = self.float_handler(player, 'y')
+            self.addresses[y_address] = y_handler
 
             ground_address = data_pointer + ' 140'
             ground_handler = self.int_handler(player, 'on_ground', 0, 0xFFFF, lambda x: x == 0, True)
             self.addresses[ground_address] = ground_handler
+
+            facing_address = data_pointer + ' 8C'
+            facing_handler = self.float_handler(player, 'facing')
+            self.addresses[facing_address] = facing_handler
+
+            vertical_velocity_address = data_pointer + ' E4'
+            vertical_velocity_handler = self.float_handler(player, 'vertical_velocity')
+            self.addresses[vertical_velocity_address] = vertical_velocity_handler
+
+            horizontal_air_velocity_address = data_pointer + ' E0'
+            horizontal_air_velocity_handler = self.float_handler(player, 'horizontal_air_velocity')
+            self.addresses[horizontal_air_velocity_address] = horizontal_air_velocity_handler
+
+            horizontal_ground_velocity_address = data_pointer + ' 14C'
+            horizontal_ground_velocity_handler = self.float_handler(player, 'horizontal_ground_velocity')
+            self.addresses[horizontal_ground_velocity_address] = horizontal_ground_velocity_handler
+
+            fastfall_velocity_address = data_pointer + ' 1E4'
+            fastfall_velocity_handler = self.float_handler(player, 'fastfall_velocity')
+            self.addresses[fastfall_velocity_address] = fastfall_velocity_handler
+
+            hitlag_counter_address = data_pointer + ' 19BC'
+            hitlag_counter_handler = self.float_handler(player, 'hitlag_counter')
+            self.addresses[hitlag_counter_address] = hitlag_counter_handler
+
+            jumps_used_address = data_pointer + ' 19C8'
+            jumps_used_handler = self.int_handler(player, 'jumps_used', 0, 0x000000FF)
+            self.addresses[jumps_used_address] = jumps_used_handler
 
     def handle(self, address, value):
         """Convert the raw address and value into changes in the State."""
